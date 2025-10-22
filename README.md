@@ -51,7 +51,7 @@ ELDE EDİLEN SONUÇLAR
 
 
 Chatbot uygulamasına buradan erişebilirsiniz 👇  
-👉 [https://teknoloji-urun-asistani.streamlit.app](https://teknoloji-urun-asistani.streamlit.app)
+https://teknolojiurunasistanibot-i52mwd6rzlduxnnwa6zbd9.streamlit.app/
 
 ---
 DİLAY YILDIRIM 
