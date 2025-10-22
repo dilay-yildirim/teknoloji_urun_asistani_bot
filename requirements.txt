@@ -2,7 +2,7 @@ python-dotenv
 datasets
 sentence-transformers
 chromadb
-google-genai
+google-generativeai
 streamlit
 uvicorn
 fastapi
