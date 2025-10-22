@@ -1,21 +1,16 @@
-# src/rag_query.py
 import os
 from dotenv import load_dotenv
 from vectorstore import create_or_get_collection
 from embeddings import Embedder
-from google import generativeai as genai
+import google.generativeai as genai
 
 load_dotenv()
-
-# API ve model ayarları
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.1-chat")  # desteklenen bir model girin
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
 assert GEMINI_API_KEY, "⚠️ Lütfen GEMINI_API_KEY'i .env dosyasına ekle!"
 
-# GenAI client oluştur
-client = genai.Client(api_key=GEMINI_API_KEY)
-
+genai.configure(api_key=GEMINI_API_KEY)
 
 class ProductAssistant:
     def __init__(self, k=5):
@@ -24,7 +19,6 @@ class ProductAssistant:
         self.k = k
 
     def retrieve(self, query):
-        """Kullanıcı sorusuna en uygun yorumları getir"""
         q_emb = self.embedder.embed_texts([query])[0].tolist()
         res = self.col.query(
             query_embeddings=[q_emb],
@@ -38,35 +32,26 @@ class ProductAssistant:
         return hits
 
     def generate_answer(self, user_query, hits):
-        """RAG ile yanıt üret"""
         context = "\n\n---\n".join([f"Yorum: {h['doc']}" for h in hits])
         prompt = f"""
-Sen bir ürün asistanısın. Aşağıdaki kullanıcı yorumlarına dayanarak kullanıcının sorusuna Türkçe yanıt ver.
+Sen bir teknoloji ürün asistanısın. Aşağıdaki kullanıcı yorumlarına dayanarak Türkçe bir yanıt oluştur.
 Soru: {user_query}
 
-Bağlam (yorumlar):
+Yorumlar:
 {context}
 
-Kısa, samimi ve öneri içeren bir yanıt oluştur:
+Kısa, samimi ve öneri içeren bir cevap oluştur:
 """
-        # Chat başlat
-        chat = client.chats.create(model=MODEL_NAME)
-
-        # Mesaj gönder
-        chat.send_message(prompt)
-
-        # Yanıtı al
-        response = chat.get_message()
-        return response.content.strip()
+        model = genai.GenerativeModel(MODEL_NAME)
+        response = model.generate_content(prompt)
+        return response.text
 
     def ask(self, query):
         hits = self.retrieve(query)
         answer = self.generate_answer(query, hits)
         return {"answer": answer, "hits": hits}
 
-
-# Test
 if __name__ == "__main__":
     assistant = ProductAssistant()
-    q = "Kargo hızı ve paketleme kalitesi hakkında ne düşünüyorsun?"
+    q = "Kargo hızı ve pil ömrü hakkında ne düşünülüyor?"
     print(assistant.ask(q)["answer"])
