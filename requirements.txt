@@ -1,0 +1,11 @@
+python-dotenv
+datasets
+sentence-transformers
+chromadb
+google-genai
+streamlit
+uvicorn
+fastapi
+pydantic
+transformers
+tqdm

@@ -1,1 +1,37 @@
+# --- Python cache ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# --- Virtual environment ---
+.venv/
+venv/
+env/
+
+# --- Data files (embedding ve örnek veri) ---
+data/chroma_db/
+data/reviews_sample.csv
+
+# --- Environment & secrets ---
 .env
+.env.*
+!.env.example  # örnek env dosyası hariç
+
+# --- Jupyter ve Streamlit cache ---
+.ipynb_checkpoints/
+.streamlit/
+
+# --- OS dosyaları ---
+.DS_Store
+Thumbs.db
+
+# --- IDE dosyaları ---
+.vscode/
+.idea/
+
+# --- Output veya geçici dosyalar ---
+*.tmp
+*.bak
+*.swp
