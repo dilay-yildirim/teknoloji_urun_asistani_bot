@@ -80,11 +80,10 @@ HUGGINGFACE_TOKEN="YOUR_HF_TOKEN"
 streamlit run src/streamlit_app.py
 
 ---
- 🌐 UYGULUAMA LİNKİ : [`Canlı Uygulamayı Aç`](https://teknolojiurunasistanibot-i52mwd6rzlduxnnwa6zbd9.streamlit.app/)** 🚀
+## UYGULUAMA LİNKİ : [Canlı Uygulamayı Aç](https://teknolojiurunasistanibot-i52mwd6rzlduxnnwa6zbd9.streamlit.app/)
 
 
 
 ---
 DİLAY YILDIRIM 
 GAIH GenAI Bootcamp — Final Projesi EKİM 2025
-[`linkedin:`] (https://www.linkedin.com/in/dilayyildirim1/)
