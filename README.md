@@ -1,58 +1,91 @@
-# 🤖 Teknoloji Ürün Asistanı (RAG Chatbot)
+# 🤖 TEKNOLOJİ ÜRÜN ASİSTANI CHATBOT
 
-PROJENİN AMACI
-Bu projenin amacı, teknoloji ürünlerine ait kullanıcı yorumlarını analiz ederek  
-ürün hakkında **doğal dilde, Türkçe ve anlamlı yanıtlar üretebilen** bir asistan geliştirmektir.  
-Sistem, kullanıcıdan gelen soruyu anlamlandırıp, gerçek yorumlar içinden en alakalı bilgileri bulur  
-ve bunlara dayanarak **öneri ve özet** sunar.
-
----
-
-VERİ SETİ
-Proje, **Hugging Face** üzerinden alınan `fthbrmnby/turkish_product_reviews` veri setini kullanır.  
-Bu veri seti, çeşitli e-ticaret platformlarından toplanmış Türkçe kullanıcı yorumlarını içerir.  
-Yorumlar; ürün kalitesi, teslimat süresi, fiyat performansı, pil ömrü gibi birçok özelliğe dair  
-doğrudan kullanıcı geri bildirimlerini barındırır.
-
-Veri kümesinin temel amacı, Türkçe metinlerde duygu ve değerlendirme analizine olanak sağlamaktır.  
-Projemiz bu yorumları kullanarak semantik arama ve doğal yanıt üretimi yapmaktadır.
+PROJE AMACI
+Bu proje, kullanıcıların teknoloji ürünleri hakkında bilgi almasını kolaylaştırmak amacıyla geliştirilmiş bir yapay zekâ destekli ürün asistanıdır.  
+Asistan, ürün yorumlarını analiz ederek kullanıcıya tavsiye, yorum özeti ve satın alma yönlendirmesi sunar.  
+Model, gerçek kullanıcı yorumlarını anlamlandırarak doğal diyaloglarla yanıt verir.
 
 ---
 
-KULLANILAN YÖNTEMLER
-- **RAG (Retrieval-Augmented Generation)** mimarisi:  
-  Kullanıcı sorgusu, önceden indekslenmiş yorumlardan en alakalı olanları getirir (retrieval),  
-  ardından **Gemini API** kullanılarak anlamlı bir yanıt üretilir (generation).
+## 📦 Veri Seti Hakkında
+Proje, Hugging Face üzerinden alınan aşağıdaki veri kümesini kullanmaktadır:
 
-- **Vektör Veritabanı (ChromaDB):**  
-  Ürün yorumları embedding vektörlerine dönüştürülerek saklanır.  
-  Arama işlemleri benzerlik skoruna göre yapılır.
-
-- **Embedding Modeli:**  
-  `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`  
-  → Çok dilli destekli, Türkçe metinler için optimize edilmiş.
-
-- **LLM (Gemini 2.5 Flash):**  
-  Google’ın büyük dil modeli, Türkçe doğal dil üretiminde kullanıldı.
-
-- **Streamlit:**  
-  Kullanıcıların doğrudan web tarayıcısı üzerinden etkileşim kurabildiği sade arayüz.
+Veri seti: [`fthbrmnby/turkish_product_reviews`](https://huggingface.co/datasets/fthbrmnby/turkish_product_reviews)  
+- Türkçe teknoloji ürün yorumlarını içerir.  
+- Her kayıt: ürün kategorisi, başlık, yorum ve puan alanlarını barındırır.  
+- Eğitim aşamasında `SAMPLE_LIMIT=15000` kayıt ile test edilmiştir.
 
 ---
 
-ELDE EDİLEN SONUÇLAR
-- Chatbot, ürün hakkındaki yorumlardan **konuya uygun, özet ve Türkçe yanıtlar** üretebilmektedir.  
-- Kullanıcı testlerinde, özellikle “pil ömrü”, “teslimat hızı”, “kalite” gibi temalarda  
-  doğru yorumları çekip anlamlı açıklamalar sunmuştur.  
-- Sistem, farklı sorgulara karşı **dinamik ve güvenilir** cevaplar üretmektedir.  
-- Sonuç: RAG mimarisi + Gemini API birleşimi, Türkçe veri setleriyle başarılı bir performans göstermiştir.  
+## 🧠 Kullanılan Yöntemler ve Teknolojiler
+
+| Teknoloji | Açıklama |
+|------------|-----------|
+| **Python** | Projenin ana dili |
+| **Streamlit** | Web arayüzü geliştirme framework’ü |
+| **Hugging Face Datasets** | Yorum verilerini sağlama |
+| **Sentence-Transformers (MiniLM-L12-v2)** | Metin embedding (anlam vektörleştirme) |
+| **ChromaDB** | Vektör veritabanı — yorumların anlam bazlı aranması |
+| **Google Gemini API (gemini-2.5-flash)** | Cevap üretimi ve doğal dil işleme |
+| **dotenv & Secrets** | Anahtar yönetimi (GEMINI_API_KEY ve HUGGINGFACE_TOKEN) |
 
 ---
 
+## ⚙️ Proje Yapısı
+📦 teknoloji_urun_asistani_bot
+├── 📁 data/ → ChromaDB vektör verileri
+├── 📁 scripts/ → Veri çekme & embedding oluşturma
+├── 📁 src/
+│ ├── ingest.py → Hugging Face’ten veri çekip ChromaDB’ye ekler
+│ ├── rag_query.py → Arama + Cevap üretimi (RAG pipeline)
+│ └── streamlit_app.py → Ana web arayüzü (Streamlit)
+├── .env (gizli) → API anahtarları (lokalde)
+├── requirements.txt → Gerekli Python kütüphaneleri
+└── README.md → Proje açıklaması (bu dosya)
 
-Chatbot uygulamasına buradan erişebilirsiniz 👇  
-https://teknolojiurunasistanibot-i52mwd6rzlduxnnwa6zbd9.streamlit.app/
+
+---
+
+## 🚀 Elde Edilen Sonuçlar
+- Chatbot, teknoloji ürünlerine ait kullanıcı yorumlarını analiz ederek anlamlı, bağlama uygun yanıtlar üretebilmektedir.  
+- Hugging Face verisinden gelen yorumlar sayesinde model, Türkçe dilinde oldukça akıcı çalışmaktadır.  
+- Kullanıcı sorularına göre:  
+  - Ürün memnuniyetini özetleyebilir,  
+  - Olumlu/olumsuz yönleri çıkarabilir,  
+  - Benzer ürün tavsiyeleri sunabilir.
+
+---
+
+## 🔧 Nasıl Çalıştırılır (Yerel Ortamda)
+
+```bash
+# 1. Ortamı klonla
+git clone https://github.com/dilay-yildirim/teknoloji_urun_asistani_bot.git
+cd teknoloji_urun_asistani_bot
+
+# 2. Sanal ortam oluştur
+python -m venv .venv
+.venv\Scripts\activate     # (Windows)
+# veya
+source .venv/bin/activate  # (Mac/Linux)
+
+# 3. Gereksinimleri yükle
+pip install -r requirements.txt
+
+# 4. .env dosyasına anahtarları ekle
+GEMINI_API_KEY="YOUR_GEMINI_KEY"
+HUGGINGFACE_TOKEN="YOUR_HF_TOKEN"
+
+# 5. Uygulamayı başlat
+streamlit run src/streamlit_app.py
+
+---
+## 🌐 Canlı Uygulama
+👉 **[Canlı Uygulamayı Aç](https://teknolojiurunasistanibot-i52mwd6rzlduxnnwa6zbd9.streamlit.app/)** 🚀
+
+
 
 ---
 DİLAY YILDIRIM 
-GAIH GenAI Bootcamp — Final Projesi
+GAIH GenAI Bootcamp — Final Projesi EKİM 2025
+linkedin: https://www.linkedin.com/in/dilayyildirim1/
